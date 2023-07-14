@@ -1,0 +1,68 @@
+version: '3.9'
+services:
+
+  app:
+    build:
+      context: ./../../
+      dockerfile: ./docker/debug/Dockerfile
+    container_name: app-debug
+    image: app-debug
+    ports:
+      - 8080:8080
+      - 4000:4000
+    env_file: ./.env
+    depends_on:
+      - postgres
+      - nats
+      - redis
+    volumes:
+      - ./logs/:/logs/
+
+  redis:
+    container_name: redis-debug
+    image: redis:latest
+    ports:
+      - "${REDIS_PORT}:6379"
+
+  postgres:
+    container_name: postgres-debug
+    image: postgres:14-alpine
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+      - ./logs/:/logs/
+    command: postgres -c logging_collector=on -c log_rotation_age=1440  -c log_truncate_on_rotation=true -c log_file_mode=0777 -c log_destination=stderr -c log_directory=/logs -c client_min_messages=notice -c log_min_messages=warning -c log_min_duration_statement=-1 -c log_statement=all  -c log_connections=0
+    environment:
+      POSTGRES_USER: ${PG_USER}
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+      POSTGRES_DB: ${PG_DB_NAME}
+    ports:
+      - "${PG_PORT}:5432"
+
+  clickhouse:
+    container_name: clickhouse-debug
+    image: clickhouse/clickhouse-server
+    volumes:
+      - clickhouse-data:/var/lib/clickhouse/
+    ports:
+      - 8123:8123
+      - 9021:9000
+      - 9009:9009
+    depends_on:
+      - nats
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider localhost:8123/ping || exit 1
+      interval: 3s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
+
+  nats:
+    container_name: nats-debug
+    image: nats:2.9.19-alpine3.18
+    ports:
+      - 8222:8222
+      - "${NATS_PORT}:4222"
+
+volumes:
+  pg-data:
+  clickhouse-data:

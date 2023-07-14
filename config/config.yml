@@ -1,0 +1,30 @@
+app:
+  name: 'test-game'
+  version: '1.0.0'
+
+http:
+  port: '8080'
+
+# конфигурация сервиса логирования
+log:
+    path: "/logs/"
+    error_file: "error.log"
+    debug_file: "debug.log"
+
+postgres:
+  user: user
+  password: pass
+  host: postgres
+  port: 5432
+  db_name: postgres
+  max_pool_size: 2
+  conn_attempts: 10
+  clickhouse_url: clickhouse://localhost:9000
+
+redis:
+  host: redis
+  port: 6379
+
+nats:
+  host: nats
+  port: 4222

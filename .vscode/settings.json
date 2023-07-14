@@ -1,0 +1,11 @@
+{
+    "files.eol": "\n",
+    "editor.tabCompletion": "on",
+    "diffEditor.codeLens": true,
+"gopls": {
+    "analyses": {
+        "ST1020": true
+    }
+},
+"MutableAI.upsell": false
+}
