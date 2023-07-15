@@ -20,7 +20,7 @@ RUN mkdir -p /logs
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
     go build -tags migrate -gcflags "all=-N -l" -o /app/app ./cmd/app
 
-#COPY config /config
+COPY config /config
 VOLUME /logs
 EXPOSE 8080 4000
 CMD [ "/go/bin/dlv", "--listen=:4000", "--headless=true", "--log=true", "--accept-multiclient", "--api-version=2", "exec", "/app/app" ]
