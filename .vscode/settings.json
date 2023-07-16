@@ -7,5 +7,6 @@
         "ST1020": true
     }
 },
-"MutableAI.upsell": false
+"MutableAI.upsell": false,
+"editor.inlineSuggest.enabled": true
 }

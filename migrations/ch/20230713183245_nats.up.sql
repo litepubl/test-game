@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS queue (
     removed Bool,
     EventTime DateTime('Europe/Moscow')
   ) ENGINE = NATS
-    SETTINGS nats_url = 'localhost:4444',
+    SETTINGS nats_url = 'nats:4222',
              nats_subjects = 'item',
              nats_format = 'JSONEachRow',
              nats_max_block_size = 10,

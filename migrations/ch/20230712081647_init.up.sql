@@ -7,4 +7,4 @@ CREATE TABLE IF NOT EXISTS items (
     removed Bool,
     EventTime DateTime('Europe/Moscow')
 )
-    ENGINE = MergeTree() ORDER BY id;
+    ENGINE = MergeTree() ORDER BY EventTime;

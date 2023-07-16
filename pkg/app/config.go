@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	DefaultConfigFilename = "./config/config.yml"
+	DefaultConfigFilename = "/config/config.yml"
 	AppConfigFileName     = "APP_CONFIG_FILENAME"
 )
 
