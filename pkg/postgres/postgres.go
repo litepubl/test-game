@@ -1,3 +1,4 @@
+// Package postgres provide access to database with connections and configuration
 package postgres
 
 import (

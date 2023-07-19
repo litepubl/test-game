@@ -2,6 +2,7 @@ package postgres
 
 import (
 	"errors"
+	"fmt"
 	"log"
 	"time"
 
@@ -35,17 +36,18 @@ func init() {
 		}
 
 		if err != nil {
-			log.Fatalf("Migrate: postgres connect error: %s", err)
+			log.Fatalf("Migrate: postgres connect error: %w", err)
 		}
 
 		err = m.Up()
 		defer m.Close()
-		if err != nil && !errors.Is(err, migrate.ErrNoChange) {
-			log.Fatalf("Migrate: up error: %s", err)
-		}
 
-		if errors.Is(err, migrate.ErrNoChange) {
-			log.Printf("Migrate: no change")
+		if err != nil {
+			if errors.Is(err, migrate.ErrNoChange) {
+				log.Printf("Migrate: no change")
+			} else {
+				return fmt.Errorf("Migrate: up error: %w", err)
+			}
 		} else {
 			log.Printf("Migrate: up success")
 		}

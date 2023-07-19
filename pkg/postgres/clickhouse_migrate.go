@@ -2,6 +2,7 @@ package postgres
 
 import (
 	"errors"
+	"fmt"
 	"log"
 	"time"
 
@@ -29,20 +30,21 @@ func clickhouseMigrate(config *Config) error {
 	}
 
 	if err != nil {
-		log.Fatalf("clickhouseMigrate: clickhouse connect error: %s", err)
+		log.Fatalf("clickhouseMigrate: clickhouse connect error: %w", err)
 	}
 
 	err = m.Up()
 	defer m.Close() //nolint
-	if err != nil && !errors.Is(err, migrate.ErrNoChange) {
-		log.Fatalf("clickhouseMigrate: up error: %s", err)
+
+	if err != nil {
+		if errors.Is(err, migrate.ErrNoChange) {
+			log.Printf("clickhouseMigrate: no change")
+		} else {
+			return fmt.Errorf("clickhouseMigrate: up error: %w", err)
+		}
+	} else {
+		log.Printf("clickhouseMigrate: up success")
 	}
 
-	if errors.Is(err, migrate.ErrNoChange) {
-		log.Printf("clickhouseMigrate: no change")
-		return nil
-	}
-
-	log.Printf("clickhouseMigrate: up success")
 	return nil
 }
