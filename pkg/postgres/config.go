@@ -37,7 +37,7 @@ func NewConfig() Config {
 
 // URL возвращает конфиг в виде строки
 func (c *Config) URL() string {
-	//postgresql://[user[:password]@][netloc][:port][/dbname][?param1=value1&...]
+	// postgresql://[user[:password]@][netloc][:port][/dbname][?param1=value1&...]
 	return fmt.Sprintf("postgresql://%s:%s@%s:%s/%s",
 		c.User,
 		c.Password,

@@ -1,10 +1,11 @@
 package app
 
 import (
+	"os"
+
 	"github.com/ilyakaznacheev/cleanenv"
 	"github.com/litepubl/test-game/pkg/logger"
 	"github.com/litepubl/test-game/pkg/postgres"
-	"os"
 )
 
 const (

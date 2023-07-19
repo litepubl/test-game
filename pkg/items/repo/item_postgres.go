@@ -2,7 +2,6 @@ package repo
 
 import (
 	"context"
-
 	"fmt"
 
 	sq "github.com/Masterminds/squirrel"
@@ -30,7 +29,6 @@ func (r *ItemRepo) List(ctx context.Context) ([]entity.Item, error) {
 		From("items").
 		Where("removed = false").
 		ToSql()
-
 	if err != nil {
 		return nil, fmt.Errorf("ItemRepo - List- r.Builder: %w", err)
 	}
@@ -83,7 +81,7 @@ func (r *ItemRepo) Create(ctx context.Context, item *entity.Item) error {
 		Columns("campaign_id, name, description, priority, removed, created_at").
 		Values(item.CampaignId, item.Name, item.Description, item.Priority, item.Removed, item.CreatedAt).
 		ToSql()
-	sql = sql + " RETURNING id"
+	sql += " RETURNING id"
 
 	if err != nil {
 		return fmt.Errorf("ItemRepo - create- r.Builder: %w", err)
@@ -130,7 +128,6 @@ func (r *ItemRepo) Update(ctx context.Context, u entity.UpdateData) (entity.Item
 	updateSQL, args, err := b.
 		Where(sq.Eq{"id": u.Id}).
 		ToSql()
-
 	if err != nil {
 		return e, fmt.Errorf("ItemRepo - Update - r.Builder: %w", err)
 	}
@@ -187,7 +184,6 @@ func (r *ItemRepo) Delete(ctx context.Context, id int) (entity.Item, error) {
 		Set("priority", p+1).
 		Where(sq.Eq{"id": id}).
 		ToSql()
-
 	if err != nil {
 		return item, fmt.Errorf("ItemRepo - Update - r.Builder: %w", err)
 	}
@@ -232,12 +228,11 @@ func (r *ItemRepo) selectItem(ctx context.Context, tx pgx.Tx, id int, e *entity.
 		From("items").
 		Where(sq.Eq{"id": id}).
 		ToSql()
-
 	if err != nil {
 		return fmt.Errorf("ItemRepo - selectItem - r.Builder: %w", err)
 	}
 
-	sql = sql + " FOR UPDATE"
+	sql += " FOR UPDATE"
 	row := tx.QueryRow(ctx, sql, args...)
 
 	return row.Scan(&e.Id, &e.CampaignId, &e.Name, &e.Description, &e.Priority, &e.Removed, &e.CreatedAt)

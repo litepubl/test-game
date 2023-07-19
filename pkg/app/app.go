@@ -138,10 +138,9 @@ func (app *app) GetConfig() *Config {
 func (app *app) Close() {
 	app.pg.Close()
 	app.pg = nil
-	app.redis.Close()
+	_ = app.redis.Close()
 	app.redis = nil
 	app.nc.Close()
 	app.nc = nil
 	app.logConfigurator.Close()
-
 }

@@ -8,8 +8,8 @@ http:
 # конфигурация сервиса логирования
 log:
     path: "/logs/"
-    error_file: "error.log"
-    debug_file: "debug.log"
+    errorFile: "error.log"
+    debugFile: "debug.log"
 
 postgres:
   user: user
